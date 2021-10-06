@@ -28,8 +28,6 @@ def get_current_user(token):
     username, _, password = data.partition(":")
     correct_username = secrets.compare_digest(username, USERNAME)
     correct_password = secrets.compare_digest(password, PASSWORD)
-    print("Username",username, "Correct:",USERNAME)
-    print("Password",password, "Correct:",PASSWORD)
     if not (correct_username and correct_password):
         raise Exception("Unauthorized")
     return username

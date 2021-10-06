@@ -132,3 +132,6 @@ dmypy.json
 node_modules/
 package.json
 package-lock.json
+.serverless/
+.vscode/
+aws
