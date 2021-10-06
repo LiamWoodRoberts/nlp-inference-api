@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Load NLP Models
-COPY load_nlp.py
+COPY load_nlp.py .
 RUN python load_nlp.py
 RUN python -m spacy download en_core_web_sm
 

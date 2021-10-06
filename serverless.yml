@@ -17,11 +17,17 @@ functions:
   auth:
     runtime: python3.6
     handler: auth.handler
+    environment:
+      USERNAME: ${env:API_USERNAME}
+      PASSWORD: ${env:API_PASSWORD}
     memorySize: 256
     description: Basic Username and Password Lambda Authizer for API
   api:
     image:
       name: API
+    environment:
+      STAGE: 'prod'
+      NLTK_DATA: './nltk_data'
     memorySize: 1024
     timeout: 30
     description: FastAPI application for Machine Learning model inference.
@@ -30,26 +36,37 @@ functions:
           method: GET
           path: '/redoc'
           cors: true
+          private: false
+          authorizer:
+            name: auth
       - http:
           method: GET
           path: '/docs'
           cors: true
+          private: false
+          authorizer:
+            name: auth
       - http:
-        method: ANY
-        path: '/api/{proxy+}'
-        cors: true
-        private: false
-        authorizer:
-          name: auth
+          method: GET
+          path: '/openapi.json'
+          cors: true
+          private: false
+          authorizer:
+            name: auth
+      - http:
+          method: ANY
+          path: '/api/{proxy+}'
+          cors: true
+          private: true
 
 resources:
   Resources:
     GatewayResponse:
-      Type: 'AWS::ApiGatway::GatewayResponse'
+      Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
         ResponseParameters:
           gatewayresponse.header.WWW-Authenticate: "'Basic'"
         ResponseType: UNAUTHORIZED
         RestApiId:
-          Ref: 'ApiGatwayRestApi'
+          Ref: 'ApiGatewayRestApi'
         StatusCode: '401'

@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -16,6 +17,8 @@ class NGRAMResponse(BaseModel):
 
 
 class NGRAMPayload(BaseModel):
-    responses: List[str] = Field(...,example=["Joe Biden is the president of the United States"])
+    responses: List[str] = Field(
+        ..., example=["Joe Biden is the president of the United States"]
+    )
     minWords: Optional[int] = Field(2)
-    maxWords: Optional[int] = Field(2)    
+    maxWords: Optional[int] = Field(2)
