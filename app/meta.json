@@ -1,0 +1,8 @@
+{
+    "tags":[
+        {
+            "name":"inference",
+            "description":"Exctract features in arrays of text using a variety of NLP models and statistics."
+        }
+    ]
+}

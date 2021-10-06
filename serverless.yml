@@ -1,0 +1,55 @@
+service: nlp-inference-api
+
+package:
+  exclude:
+    - data/**
+
+provider:
+  name: aws
+  stage: prod
+  ecr:
+    images:
+      API:
+        path: ./
+  region: us-east-1
+
+functions:
+  auth:
+    runtime: python3.6
+    handler: auth.handler
+    memorySize: 256
+    description: Basic Username and Password Lambda Authizer for API
+  api:
+    image:
+      name: API
+    memorySize: 1024
+    timeout: 30
+    description: FastAPI application for Machine Learning model inference.
+    events:
+      - http:
+          method: GET
+          path: '/redoc'
+          cors: true
+      - http:
+          method: GET
+          path: '/docs'
+          cors: true
+      - http:
+        method: ANY
+        path: '/api/{proxy+}'
+        cors: true
+        private: false
+        authorizer:
+          name: auth
+
+resources:
+  Resources:
+    GatewayResponse:
+      Type: 'AWS::ApiGatway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.WWW-Authenticate: "'Basic'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatwayRestApi'
+        StatusCode: '401'
