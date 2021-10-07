@@ -12,7 +12,7 @@ docker-compose up -d --build
 You can stop the containers at any time by running:
 
 ```
-docker-compoe down -v
+docker-compose down -v
 ```
 
 ## Testing
@@ -52,10 +52,8 @@ This repo is set up to be deployed to AWS using serverless. First export your de
 You will need to have brew, node and serverless set up for a mac.
 
 ```
-export USERNAME='newApiDocsUsername'
-export PASSWORD='newApiDocsPassword'
-export AWS_ACC
+export API_USERNAME='newApiDocsUsername'
+export API_PASSWORD='newApiDocsPassword'
 export STAGE='prod'
-npm install serverless
 serverless deploy
 ```

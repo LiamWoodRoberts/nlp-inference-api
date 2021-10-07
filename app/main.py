@@ -1,10 +1,14 @@
+# Packages
+import sklearn # Throws an error if this isn't imported first
 import json
 import logging
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
+from spacy import load
 
+# Local Modules
 from app.api import inference
 
 log = logging.getLogger("uvicorn")
@@ -25,7 +29,7 @@ else:
 def create_application() -> FastAPI:
     application = FastAPI(
         title="NLP Annotation API",
-        descrition=description,
+        description=description,
         openapi_tags=tags_metadata,
         root_path=prefix
     )
